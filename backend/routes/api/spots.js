@@ -88,7 +88,7 @@ router.post('/:spotId/images', requireAuth, async(req, res, next) => {
     const userId = req.user.id
     const spotId = req.params.spotId
 
-    const spot = Spot.findOne({
+    const spot = await Spot.findOne({
         where: {
             id: spotId
         }
@@ -100,14 +100,14 @@ router.post('/:spotId/images', requireAuth, async(req, res, next) => {
         return next(err);
     };
 
-    // if(spot.ownerId !== userId) {
-    //     const err = new Error('Forbidden');
-    //     err.status = 403;
-    //     return next(err)
-    // }
+    if(spot.ownerId !== userId) {
+        const err = new Error('Forbidden');
+        err.status = 403;
+        return next(err)
+    }
 
     const { url, preview } = req.body;
-
+    console.log('###', preview)
     if(preview) {
         await Spot.update({
             previewImage: url
@@ -118,9 +118,18 @@ router.post('/:spotId/images', requireAuth, async(req, res, next) => {
         })
     }
 
+    console.log(await Spot.findOne({
+        where: {
+            id: spotId
+        }
+    }))
+
     const image = await SpotImage.create({ spotId, url, preview });
 
-    const responseImage = await SpotImage.findbyPk(image.id, {
+    const responseImage = await SpotImage.findOne({
+        where: {
+            id: image.id
+        },
         attributes: {
             exclude: ['spotId', 'updatedAt', 'createdAt']
         }
@@ -133,9 +142,14 @@ router.put('/:spotId', requireAuth, validateSpot, async( req, res, next) => {
     //Verifies spot and owner
     const userId = req.user.id;
     const spotId = req.params.spotId;
+    
 
-    const spot = Spot.findbyPk(spotId);
-
+    const spot = await Spot.findOne({
+        where: {
+            id: spotId
+        }
+    });
+    
     if (!spot) {
         const err = new Error("Spot couldn't be found");
         err.status = 404;
@@ -166,7 +180,11 @@ router.put('/:spotId', requireAuth, validateSpot, async( req, res, next) => {
         }
     })
 
-    const responseSpot = Spot.findbyPk(spotId);
+    const responseSpot = await Spot.findOne({
+        where: {
+            id: spotId
+        }
+    });
 
     res.json(responseSpot)
 })
@@ -176,21 +194,25 @@ router.delete('/:spotId', requireAuth, async(req, res, next) => {
     const userId = req.user.id;
     const spotId = req.params.spotId;
 
-    const spot = Spot.findbyPk(spotId);
+    const spot = await Spot.findOne({
+        where: {
+            id: spotId
+        }
+    });
 
     if (!spot) {
         const err = new Error("Spot couldn't be found");
         err.status = 404;
         return next(err);
     };
-
+    
     if(spot.ownerId !== userId) {
         const err = new Error('Forbidden');
         err.status = 403;
         return next(err)
     };
 
-    Spot.destroy({
+    await Spot.destroy({
         where: {
             id: spotId
         }
@@ -200,6 +222,45 @@ router.delete('/:spotId', requireAuth, async(req, res, next) => {
         message: 'Successfully deleted'
     })
 })
+
+router.get('/:spotId/reviews', async(req, res, next) => {
+    const spotId = req.params.spotId;
+    
+    const reviews = await Review.findAll({
+        where: {
+            spotId: spotId
+        }
+    })
+
+    if(!reviews) {
+        const err = new Error("Spot couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+
+    res.json(reviews)
+});
+
+router.post('/:spotId/reviews', requireAuth, async(req, res, next) => {
+    const spotId = req.params.spotId;
+    const userId = req.user.id;
+    const { review, stars} = req.body;
+
+    const spot = await Spot.findOne({
+        where: {
+            id: spotId
+        }
+    })
+
+    if(!spot) {
+        const err = new Error("Spot couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+
+    await Review.create({spotId, userId})
+})
+
 
 
 
