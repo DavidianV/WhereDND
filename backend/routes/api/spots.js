@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const { Spot, SpotImage } = require('../../db/models')
+const { Spot, SpotImage, Review } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth')
 const { handleValidationErrors } = require('../../utils/validation');
 const { check } = require('express-validator');
@@ -39,6 +39,15 @@ const validateSpot = [
         .custom(price => price > 0)
         .withMessage('Price per day must be a positive number'),
     handleValidationErrors
+]
+
+const validateReview = [
+check('review')
+.exists({checkFalsy: true})
+.withMessage('Review text is required'),
+check('stars')
+.isInt(),
+handleValidationErrors
 ]
 
 
@@ -258,8 +267,33 @@ router.post('/:spotId/reviews', requireAuth, async(req, res, next) => {
         return next(err);
     }
 
-    await Review.create({spotId, userId})
+    const responseReview = await Review.create({spotId, userId, review, stars});
+
+    res.json(responseReview);
 })
+
+router.post('/:spotId/bookings', requireAuth, async(req, res) => {
+    const userId = req.user.id;
+    const spotId = req.params.spotId;
+
+    const spot = await Spot.findOne({
+        where: {
+            id: spotId
+        }
+    })
+
+    if(!spot) {
+        const err = new Error("Spot couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+
+    
+})
+
+
+
+    
 
 
 
