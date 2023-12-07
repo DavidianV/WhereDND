@@ -1,7 +1,7 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const router = express.Router();
-const { Review } = require('../../db/models');
+const { Review, ReviewImage } = require('../../db/models');
 
 router.get('/current', requireAuth, async(req, res) => {
     const userId = req.user.id;
@@ -32,12 +32,23 @@ router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
         return next(err);
     };
 
-    if(review.ownerId !== userId) {
+    if(review.userId !== userId) {
         const err = new Error('Forbidden');
         err.status = 403;
         return next(err)
     }
 
+    const images = await ReviewImage.findAll({
+        where: {
+            id: 10
+        }
+    })
+    
+    if(images) {
+        const err = new Error("Maximum number of images for this resource was reached");
+        err.status = 403;
+        return next(err);
+    }
     const { url, preview } = req.body;
     // console.log('###', preview)
     if(preview) {

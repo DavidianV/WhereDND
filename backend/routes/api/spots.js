@@ -46,7 +46,13 @@ check('review')
 .exists({checkFalsy: true})
 .withMessage('Review text is required'),
 check('stars')
-.isInt(),
+.toInt()
+.custom(async stars => {
+    if(stars > 5 || stars < 0) {
+        throw new Error("Stars must be an integer from 1 to 5")
+    }
+}),
+
 handleValidationErrors
 ]
 
@@ -235,22 +241,28 @@ router.delete('/:spotId', requireAuth, async(req, res, next) => {
 router.get('/:spotId/reviews', async(req, res, next) => {
     const spotId = req.params.spotId;
     
+    const spot = await Spot.findOne({
+        where: {
+            id: spotId
+        }
+    })
+
+    if(!spot) {
+        const err = new Error("Spot couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+    
     const reviews = await Review.findAll({
         where: {
             spotId: spotId
         }
     })
 
-    if(!reviews) {
-        const err = new Error("Spot couldn't be found");
-        err.status = 404;
-        return next(err);
-    }
-
     res.json(reviews)
 });
 
-router.post('/:spotId/reviews', requireAuth, async(req, res, next) => {
+router.post('/:spotId/reviews', requireAuth, validateReview, async(req, res, next) => {
     const spotId = req.params.spotId;
     const userId = req.user.id;
     const { review, stars} = req.body;
@@ -264,6 +276,19 @@ router.post('/:spotId/reviews', requireAuth, async(req, res, next) => {
     if(!spot) {
         const err = new Error("Spot couldn't be found");
         err.status = 404;
+        return next(err);
+    }
+
+    const sampleReview = await Review.findOne({
+        where: {
+            spotId: spotId,
+            userId: userId
+        }
+    })
+
+    if(sampleReview) {
+        const err = new Error("User already has a review for this spot");
+        err.status = 500;
         return next(err);
     }
 

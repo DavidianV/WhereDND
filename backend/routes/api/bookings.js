@@ -15,6 +15,6 @@ router.get('/current', requireAuth, async(req, res) => {
     res.json(bookings)
 })
 
-router.
+
 
 module.exports = router;
