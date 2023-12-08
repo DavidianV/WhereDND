@@ -122,7 +122,7 @@ router.post('/:spotId/images', requireAuth, async(req, res, next) => {
     }
 
     const { url, preview } = req.body;
-    console.log('###', preview)
+    //console.log('###', preview)
     if(preview) {
         await Spot.update({
             previewImage: url
@@ -133,11 +133,6 @@ router.post('/:spotId/images', requireAuth, async(req, res, next) => {
         })
     }
 
-    console.log(await Spot.findOne({
-        where: {
-            id: spotId
-        }
-    }))
 
     const image = await SpotImage.create({ spotId, url, preview });
 
