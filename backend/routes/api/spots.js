@@ -93,9 +93,32 @@ router.post('/', requireAuth, validateSpot, async(req, res) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
     const ownerId = req.user.id;
 
-    const spot = await Spot.create({ownerId, address, city, state, country, lat, lng, name, description, price})
 
-    res.json(spot)
+    const spot = await Spot.create({
+        ownerId, 
+        address, 
+        city, 
+        state, 
+        country, 
+        lat: Number.parseInt(lat), 
+        lng: Number.parseInt(lng), 
+        name, description, 
+        rice: Number.parseInt(price)
+    })
+
+    const responseSpot = {
+        ownerId, 
+        address, 
+        city, 
+        state, 
+        country, 
+        lat: Number.parseFloat(lat), 
+        lng: Number.parseFloat(lng), 
+        name, description, 
+        rice: Number.parseFloat(price)
+    }
+
+    res.json(responseSpot)
 })
 
 router.post('/:spotId/images', requireAuth, async(req, res, next) => {
@@ -179,11 +202,11 @@ router.put('/:spotId', requireAuth, validateSpot, async( req, res, next) => {
         city: city,
         state: state,
         country: country,
-        lat: lat,
-        lng: lng,
+        lat: Number.parseFloat(lat),
+        lng: Number.parseFloat(lng),
         name: name,
         description: description,
-        price: price
+        price: Number.parseFloat(price)
     }, {
         where: {
             id: spotId
