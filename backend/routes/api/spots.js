@@ -594,7 +594,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async(req, res, nex
         updatedAt: secret.updatedAt
     }
 
-    res.json(responseReview);
+    res.status(201).json(responseReview);
 })
 
 
