@@ -5,7 +5,6 @@ const { User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../d
 const { requireAuth } = require('../../utils/auth')
 const { handleValidationErrors } = require('../../utils/validation');
 const { check } = require('express-validator');
-const booking = require('../../db/models/booking');
 
 
 const calculateAvgRating = async spotId => {
@@ -202,6 +201,8 @@ router.get('/', validateParams, async(req, res) => {
             [Op.lte]: [maxPrice]
         }};
 
+        //console.log(where, '#########')
+
     const spots = await Spot.findAll({
         include: [{
             model: Review
@@ -306,7 +307,7 @@ router.get('/:spotId', async(req, res, next) => {
     }
     
 
-        responseSpot = {
+    const responseSpot = {
             id: spot.id,
             ownerId: spot.ownerId,
             address: spot.address,
@@ -656,34 +657,30 @@ router.post('/:spotId/bookings', requireAuth, async(req, res, next) => {
                 const end_exist = new Date(booking.endDate);
                 const start = new Date(startDate)
                 const end = new Date(endDate);
-            //dates within existing booking
+
             if(start_exist <= start && end_exist>= end) {
-                //console.log("in this case1")
                 const err = new Error("Sorry, this spot is already booked for the specified dates");
                 err.status = 403;
                 return next(err);
             }
-            //start date on existing start date/end date
+            
             if (start >= start_exist && start <= end_exist) {
-                //console.log("in this case2")
                 const err = new Error("Sorry, this spot is already booked for the specified dates");
                 err.status = 403;
                 err.errors = {}
                 err.errors.startDate = "Start date conflicts with an existing booking"
                 return next(err);
             }
-            //end date on existing start date/end date
+            
             if (end >= start_exist && end <= end_exist) {
-                //console.log("in this case3")
                 const err = new Error("Sorry, this spot is already booked for the specified dates");
                 err.status = 403;
                 err.errors = {}
                 err.errors.endDate = "End date conflicts with an existing booking"
                 return next(err);
             }
-            //dates surrond existing boooking
+            
             if(start>= start_exist && end >= end_exist) {
-                //console.log("in this case4")
                 const err = new Error("Sorry, this spot is already booked for the specified dates");
                 err.status = 403;
                 return next(err);
