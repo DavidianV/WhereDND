@@ -538,15 +538,10 @@ router.get('/:spotId/reviews', async(req, res, next) => {
             spotId: spotId
         }
     })
-    const reviewImages = await ReviewImage.findAll({
-        where: {
-            reviewId: reviewId
-        }
-    })
+
 
     const response = {
-        Review: reviews,
-        ReviewImages: reviewImages
+        Review: reviews
     }
 
     res.json(response)
