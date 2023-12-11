@@ -525,7 +525,7 @@ router.post('/:spotId/bookings', requireAuth, async(req, res, next) => {
         return next(err);
     }
 
-    if(spot.ownerId !== userId) {
+    if(spot.ownerId === userId) {
         const err = new Error("Forbidden");
         err.status = 403;
         return next(err)
