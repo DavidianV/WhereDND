@@ -538,8 +538,18 @@ router.get('/:spotId/reviews', async(req, res, next) => {
             spotId: spotId
         }
     })
+    const reviewImages = await ReviewImage.findAll({
+        where: {
+            reviewId: reviewId
+        }
+    })
 
-    res.json(reviews)
+    const response = {
+        Review: reviews,
+        ReviewImages: reviewImages
+    }
+
+    res.json(response)
 });
 
 router.post('/:spotId/reviews', requireAuth, validateReview, async(req, res, next) => {
