@@ -4,6 +4,8 @@ const router = express.Router();
 const { Booking, Spot } = require('../../db/models');
 const { Op } = require('sequelize')
 
+const validateBooking = []
+
 router.get('/current', requireAuth, async(req, res) => {
     const userId = req.user.id
 
@@ -21,7 +23,7 @@ router.get('/current', requireAuth, async(req, res) => {
     res.json(bookings)
 })
 
-router.put('/:bookingId', requireAuth, async(req, res, next) => {
+router.put('/:bookingId', requireAuth, validateBooking, async(req, res, next) => {
     const {bookingId} = req.params
         const {startDate, endDate} = req.body
         const {user} = req
@@ -109,16 +111,15 @@ router.put('/:bookingId', requireAuth, async(req, res, next) => {
         return res.json(updatedbooking)
     });
 
-    router.delete("/:bookingId", requireAuth, async (req, res, next) => {
-        const bookingId = req.params.bookingId;
-        const userId = req.user.id
+    router.delete("/:bookingId",requireAuth, async (req, res, next) => {
+        const bookingId = req.params.bookingId
+        const { user } = req
+        const booking = await Booking.findByPk(bookingId,
+            {include: {
+                model: Spot,
+                attributes: ["ownerId"]
+            }})
     
-        const booking = await Booking.findOne({
-            where: {
-                id: bookingId
-            }
-        })
-
         if (!booking) {
             const err = new Error("Booking couldn't be found");
             err.status = 404;
