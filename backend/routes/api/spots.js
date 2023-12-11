@@ -292,6 +292,18 @@ router.get('/:spotId', async(req, res, next) => {
                 exclude: ['spotId', 'createdAt', 'updatedAt']
             }   
     })
+
+    const owner = await User.findOne({
+        where: {
+            id: spot.ownerId
+        }
+    })
+
+    const safeOwner = {
+        id: owner.id,
+        firstName: owner.firstName,
+        lastName: owner.lastName
+    }
     
 
         responseSpot = {
@@ -311,7 +323,7 @@ router.get('/:spotId', async(req, res, next) => {
             numReviews: numReviews,
             avgStarRating: avgRating,
             SpotImages: spotImages,
-            Owner: spot.User
+            Owner: safeOwner
         }
 
         return res.json(responseSpot);
