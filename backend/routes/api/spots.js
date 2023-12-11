@@ -464,7 +464,24 @@ router.put('/:spotId', requireAuth, validateSpot, async( req, res, next) => {
         }
     });
 
-    res.json(responseSpot)
+    const safeSpot = {
+        id: responseSpot.id,
+        ownerId: responseSpot.ownerId, 
+        address: responseSpot.address, 
+        city: responseSpot.city, 
+        state: responseSpot.state, 
+        country: responseSpot.country, 
+        lat: Number.parseFloat(responseSpot.lat), 
+        lng: Number.parseFloat(responseSpot.lng), 
+        name: responseSpot.name, 
+        description: responseSpot.description, 
+        price: Number.parseFloat(responseSpot.price),
+        createdAt: responseSpot.createdAt,
+        updatedAt: responseSpot.updatedAt
+
+    }
+
+    res.json(safeSpot)
 })
 
 router.delete('/:spotId', requireAuth, async(req, res, next) => {
