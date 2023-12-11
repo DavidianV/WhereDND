@@ -105,7 +105,7 @@ router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
 
 
 //Edit a Review
-router.put('/:reviewId', requireAuth, validateReview, async(req, re, next) => {
+router.put('/:reviewId', requireAuth, validateReview, async(req, res, next) => {
     const reviewId = req.params.reviewId;
     const userId = req.user.id;
 

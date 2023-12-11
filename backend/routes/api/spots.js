@@ -180,6 +180,10 @@ router.get('/current', requireAuth, async(req, res) => {
             ownerId: req.user.id
         }
     })
+    userSpots.forEach(spot => {
+        spot.lat = Number.parseFloat(spot.lat)
+        spot.lng = Number.parseFloat(spot.lng)
+    })
 
     const spots = {
         Spots: userSpots
@@ -215,27 +219,47 @@ router.get('/:spotId', async(req, res, next) => {
         return next(err);
     }
 
-    const {Reviews, Owner, SpotImages, ...rest} = spot.toJSON()
-        let avgStarRating
-        if(!Reviews){
-            let avgStarRating = 0;
-            return res.json({...rest, numReviews: 0, avgStarRating, SpotImages, Owner})
+    let reviews = spot.Reviews;
+        let numReviews = reviews.length;
+
+        currSpot = spot.toJSON();
+
+        let totalStars = reviews.reduce((sum, review) => (sum + review.stars), 0);
+
+        if (totalStars) {
+            avgStars = totalStars / reviews.length;
+        } else {
+            avgStars = "No reviews found"
         }
-        else{
-            let sum = 0;
-            Reviews.forEach(review => {
-                sum+= review.stars
-            })
-            avgStarRating = Math.round((sum / Reviews.length) * 10) / 10;
+
+        responseSpot = {
+            id: spot.id,
+            ownerId: spot.ownerId,
+            address: spot.address,
+            city: spot.city,
+            state: spot.state,
+            country: spot.country,
+            lat: Number.parseFloat(spot.lat),
+            lng: Number.parseFloat(spot.lng),
+            name: spot.name,
+            description: spot.description,
+            price: Number.parseFloat(spot.price),
+            createdAt: spot.createdAt,
+            updatedAt: spot.updatedAt,
         }
-        const updatedSpot = {
-            ...rest,
-            numReviews:Reviews.length,
-            avgStarRating,
-            SpotImages,
-            Owner
+
+        responseSpot.numReviews = numReviews;
+        responseSpot.avgStarRating = avgStars;
+
+        if (spot.Images.length === 0) {
+            responseSpot.SpotImages = "No spot images found"
+        } else {
+            responseSpot.SpotImages = spot.Images;
         }
-        return res.json(updatedSpot)
+
+        responseSpot.Owner = spot.User;
+
+        return res.json(responseSpot);
     });
 
 router.post('/', requireAuth, validateSpot, async(req, res) => {
