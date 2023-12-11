@@ -15,12 +15,14 @@ router.get('/current', requireAuth, async(req, res) => {
         }
     }, {include: [
         {
-            model: Spot
+            model: Spot,
+            attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage']
         }
     ]}
     )
 
-    res.json(bookings)
+    res.json({
+        Bookings: bookings})
 })
 
 router.put('/:bookingId', requireAuth, validateBooking, async(req, res, next) => {
