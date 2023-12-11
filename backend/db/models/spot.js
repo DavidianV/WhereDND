@@ -56,14 +56,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
+    },
     price: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: false
     },
     previewImage: {
       type: DataTypes.STRING,
     },
-    }
   }, {
     sequelize,
     modelName: 'Spot',

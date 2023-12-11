@@ -15,10 +15,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      spotId: {
+      userId: {
         type: Sequelize.INTEGER
       },
-      userId: {
+      spotId: {
         type: Sequelize.INTEGER
       },
       review: {
@@ -36,10 +36,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      },
-      previewImage: {
-        allowNull: true,
-        type: Sequelize.STRING(255)
       }
     }, options);
   },
