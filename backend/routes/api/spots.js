@@ -7,6 +7,31 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { check } = require('express-validator');
 const booking = require('../../db/models/booking');
 
+
+const calculateAvgRating = async spotId => {
+    const reviews = await Review.findAll({ 
+        where: {
+        spotId: spotId,
+    }});
+    const reviewCount = reviews.length;
+
+    let sum = 0;
+    reviews.forEach(review => {
+        sum+= review.stars;
+    });
+
+    return sum / reviewCount;
+};
+
+const calculateNumReviews = async spotId => {
+    const reviews = await Review.findAll({ 
+        where: {
+            spotId: spotId,
+        }});
+       return reviews.length;
+};
+
+
 const validateSpot = [
     check('address')
     .exists({checkFalsy: true})
@@ -192,25 +217,12 @@ router.get('/current', requireAuth, async(req, res) => {
 });
 
 router.get('/:spotId', async(req, res, next) => {
+    const spotId = req.params.spotId
+    
     const spot = await Spot.findOne({
         where: {
-            id: req.params.spotId
+            id: spotId
         }
-    }, {
-        include :[
-            {
-                model: Review
-            },
-            {
-                model: SpotImage,
-                attributes: ["id", "url", "preview"]
-            },
-            {
-                model: User,
-                as: 'Owner',
-                attributes: ["id", "firstName", "lastName"]
-            }
-        ]
     });
 
     if(!spot) {
@@ -219,18 +231,17 @@ router.get('/:spotId', async(req, res, next) => {
         return next(err);
     }
 
-    let reviews = spot.Reviews;
-        let numReviews = reviews.length;
-
-        currSpot = spot.toJSON();
-
-        let totalStars = reviews.reduce((sum, review) => (sum + review.stars), 0);
-
-        if (totalStars) {
-            avgStars = totalStars / reviews.length;
-        } else {
-            avgStars = "No reviews found"
-        }
+    const numReviews = await calculateNumReviews(spotId);
+    const avgRating = await calculateAvgRating(spotId);
+    const spotImages = await SpotImage.findAll({
+        where: {
+            id: spotId
+        },
+        attributes: {
+                exclude: ['spotId', 'createdAt', 'updatedAt']
+            }   
+    })
+    
 
         responseSpot = {
             id: spot.id,
@@ -246,18 +257,11 @@ router.get('/:spotId', async(req, res, next) => {
             price: Number.parseFloat(spot.price),
             createdAt: spot.createdAt,
             updatedAt: spot.updatedAt,
+            numReviews: numReviews,
+            avgStarRating: avgRating,
+            SpotImages: spotImages,
+            Owner: spot.User
         }
-
-        responseSpot.numReviews = numReviews;
-        responseSpot.avgStarRating = avgStars;
-
-        if (spot.Images.length === 0) {
-            responseSpot.SpotImages = "No spot images found"
-        } else {
-            responseSpot.SpotImages = spot.Images;
-        }
-
-        responseSpot.Owner = spot.User;
 
         return res.json(responseSpot);
     });

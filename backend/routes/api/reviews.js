@@ -55,6 +55,11 @@ router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
     //Verifies spot and owner
     const userId = req.user.id
     const reviewId = req.params.reviewId
+    if(!reviewId) {
+        const err = new Error("Review couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
 
     const review = await Review.findOne({
         where: {
