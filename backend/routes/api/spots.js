@@ -79,12 +79,63 @@ check('stars')
         throw new Error("Stars must be an integer from 1 to 5")
     }
 }),
-
 handleValidationErrors
 ]
 
+const validateParams= [
+    check("page")
+      .optional()
+      .isInt()
+      .withMessage("Page must be greater than or equal to 1")
+      .custom(value => ((value >= 1 ) && (value <= 10)))
+      .withMessage("Page must be greater than or equal to 1"),
+    check("size")
+      .optional()
+      .isInt()
+      .withMessage("Page must be greater than or equal to 1")
+      .custom(value => ((value >= 1 ) && (value <= 20)))
+      .withMessage("Size must be greater than or equal to 1"),
+    check("minLat")
+      .optional()
+      .isDecimal()
+      .withMessage("Minimum latitude is invalid")
+      .custom(value => ((value >= -90) && (value <= 90)))
+      .withMessage("Minimum latitude is invalid"),
+    check("maxLat")
+      .optional()
+      .isDecimal()
+      .withMessage("Maximum latitude is invalid")
+      .custom(value => ((value >= -90) && (value <= 90)))
+      .withMessage("Maximum latitude is invalid"),
+    check("minLng")
+      .optional()
+      .isDecimal()
+      .withMessage("Minimum longitude is invalid")
+      .custom(value => ((value >= -180) && (value <= 180)))
+      .withMessage("Minimum longitude is invalid"),
+    check("maxLng")
+      .optional()
+      .isDecimal()
+      .withMessage("Maximum longitude is invalid")
+      .custom(value => ((value >= -180) && (value <= 180)))
+      .withMessage("Maximum longitude is invalid"),
+    check("minPrice")
+      .optional()
+      .isDecimal()
+      .withMessage("Maximum price must be greater than or equal to 0")
+      .custom(value => (value >= 0))
+      .withMessage("Minimum price must be greater than or equal to 0"),
+    check("maxPrice")
+      .optional()
+      .isDecimal()
+      .withMessage("Maximum price must be greater than or equal to 0")
+      .custom(value => value >= 0)
+      .withMessage("Maximum price must be greater than or equal to 0"),
+    handleValidationErrors
+  ];
 
-router.get('/', async(req, res) => {
+
+router.get('/', validateParams, async(req, res) => {
     const {  minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
     let { page, size } = req.query
     const results = {}
