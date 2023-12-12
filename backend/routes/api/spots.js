@@ -364,7 +364,7 @@ router.post('/', requireAuth, validateSpot, async(req, res) => {
         updatedAt: spot.updatedAt
     }
 
-    res.json(responseSpot)
+    res.status(201).json(responseSpot)
 })
 
 router.post('/:spotId/images', requireAuth, async(req, res, next) => {
@@ -534,16 +534,24 @@ router.get('/:spotId/reviews', async(req, res, next) => {
         return next(err);
     }
     
-    const reviews = await Review.findAll({
+    const Reviews = await Review.findAll({
         where: {
-            spotId: spotId
-        }
-    })
+            spotId: spot.id
+        },
+        include: [
+            { model: User,
+                as: 'User',
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            { model: ReviewImage,
+                as: 'ReviewImages',
+                attributes: ['id', 'url']
+            }
+        ]
+        })
 
 
-    const response = {
-        Review: reviews
-    }
+    const response = { Reviews }
 
     res.json(response)
 });

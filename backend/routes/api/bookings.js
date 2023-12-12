@@ -1,29 +1,47 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const router = express.Router();
-const { Booking, Spot } = require('../../db/models');
+const { Booking, Spot, SpotImage, Image } = require('../../db/models');
 const { Op } = require('sequelize')
 
 const validateBooking = []
 
 router.get('/current', requireAuth, async(req, res) => {
-    const userId = req.user.id
+    const userId = req.user.id;
+    const bookings = await Booking.findAll({ 
+      where: { userId },
+      include: {
+        model: Spot,
+        as: 'Spot',
+        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price',],
+      },
+    });
+  
+    const Bookings = await Promise.all(bookings.map( async (booking) => {
+      const spot = { ...booking.Spot.get() };
+      const previewImage = await SpotImage.findOne({
+        where: { spotId: spot.id, preview: true },
+      });
+  
+      if (previewImage) {
+        spot.previewImage = previewImage.url;
+      }
+  
+      return {
+        id: booking.id,
+        spotId: booking.spotId,
+        Spot: spot,
+        userId: booking.userId,
+        startDate: booking.startDate,
+        endDate: booking.endDate,
+        createdAt: booking.createdAt,
+        updatedAt: booking.updatedAt,
+      }
+    }));
+    
+    return res.status(200).json({ Bookings });
+});
 
-    const bookings = await Booking.findAll({
-        where: {
-            userId: userId
-        }
-    }, {include: [
-        {
-            model: Spot,
-            attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage']
-        }
-    ]}
-    )
-
-    res.json({
-        Bookings: bookings})
-})
 
 router.put('/:bookingId', requireAuth, validateBooking, async(req, res, next) => {
     const {bookingId} = req.params
