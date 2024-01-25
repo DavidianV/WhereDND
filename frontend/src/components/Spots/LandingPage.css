@@ -1,0 +1,12 @@
+.spot-tiles {
+    display: flex;
+    justify-content: space-between;
+}
+
+.spot-tile text {
+    font-size: 10px;
+}
+
+.rating {
+    float: right;
+}

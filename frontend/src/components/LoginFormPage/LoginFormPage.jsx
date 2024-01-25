@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+
 
 import './LoginForm.css';
 
@@ -11,11 +12,18 @@ const LoginForm = () => {
     const [credential, setCredential] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
+    let valid
 
     const updateCredential = (e) => setCredential(e.target.value);
     const updatePassword = (e) => setPassword(e.target.value);
 
     if (sessionUser) return <Navigate to="/" replace={true} />;
+
+    useEffect(() => {
+        valid = false
+
+        if (credential.length >= 4 && password.length >= 6) valid = true
+    })
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -45,7 +53,7 @@ const LoginForm = () => {
                     required
                 />
                 {errors.credential && <p>{errors.credential}</p>}
-                <button type="submit">Login</button>
+                <button disabled={!valid} type="submit">Login</button>
             </form>
         </>
     )

@@ -4,6 +4,8 @@ import * as sessionActions from '../../store/session';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
+import './Navigation.css'
+import { NavLink } from 'react-router-dom';
 
 function ProfileButton({ user }) {
     const dispatch = useDispatch();
@@ -40,11 +42,12 @@ function ProfileButton({ user }) {
     const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
     return (
-        <>
-            <button onClick={toggleMenu}>
+        <div>
+            <button className='profile-button' onClick={toggleMenu}>
+                <i className="fa-solid fa-bars" />
                 <i className="fas fa-user-circle" />
             </button>
-            <ul className={ulClassName} ref={ulRef}>
+            <ul className={ulClassName} ref={ulRef} hidden={!showMenu}>
                 {user ? (
                     <>
                         <li>{user.username}</li>
@@ -55,12 +58,13 @@ function ProfileButton({ user }) {
                         </li>
                     </>
                 ) : (
-                    <>
+                    <div className='dropdown'>
                         <li>
                             <OpenModalButton
                                 buttonText="Log In"
                                 onButtonClick={closeMenu}
                                 modalComponent={<LoginFormModal />}
+                                className='dropdown-button'
                             />
                         </li>
                         <li>
@@ -68,12 +72,16 @@ function ProfileButton({ user }) {
                                 buttonText="Sign Up"
                                 onButtonClick={closeMenu}
                                 modalComponent={<SignupFormModal />}
+                                className='dropdown-button'
                             />
                         </li>
-                    </>
+                        <li className='manage-spots'>
+                            <NavLink exact to='/spots/current'/>
+                        </li>
+                    </div>
                 )}
             </ul>
-        </>
+        </div>
     );
 }
 
