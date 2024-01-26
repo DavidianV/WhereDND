@@ -9,17 +9,24 @@
     border-radius: 37px;
     border-color: lightslategray;
     background-color: white;
-    float: right;
     font-family: inherit;
     margin: 0;
 }
 
-.navbar-right {
-    float: right;
-    
+.nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
 }
 
-h2 {
+.navbar-right {
+    float: right;
+
+}
+
+.title {
     float: left;
     color: red;
     font-size: large;
@@ -35,7 +42,6 @@ ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    float: right;
     border-width: 2px;
     border-color: lightslategray;
     border-bottom: 100%;
@@ -59,6 +65,7 @@ i {
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     overflow: hidden;
+    position: absolute;
 }
 
 .dropdown li {
@@ -112,4 +119,8 @@ h1 {
 
 #modal-content button:disabled {
     background-color: lightslategray;
+}
+
+.error-message {
+    color: red;
 }

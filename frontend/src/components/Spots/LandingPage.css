@@ -1,12 +1,99 @@
-.spot-tiles {
+/*Landing page*/
+
+.landing-page {
+    padding-top: 80px;
+}
+
+.spots-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 80px;
+}
+
+#all-spots-title {
+    margin: 0% 5% auto;
+}
+
+.image {
+    height: 250px;
+    width: 100%;
+    margin: 0;
+}
+
+.location-rating {
     display: flex;
     justify-content: space-between;
+    margin: 2%;
 }
 
-.spot-tile text {
-    font-size: 10px;
+.spot-image {
+    width: 100%;
+    height: 100%;
 }
 
-.rating {
+.single-spot {
+    border: 3px solid #264233;
+    border-radius: 3%;
+    width: 20%;
+    margin: 2%;
+}
+
+@media (max-width: 1400px) {
+    .spots-grid {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 1000px;
+        overflow: auto;
+        margin: auto;
+    }
+
+    .single-spot {
+        border: 3px solid #264233;
+        width: 28%;
+        margin: 2%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .spots-grid {
+        display: flex;
+        flex-wrap: wrap;
+
+        overflow: auto;
+        margin: auto;
+
+    }
+
+    .single-spot {
+        border: 3px solid #264233;
+        width: 40%;
+        margin: 2%;
+    }
+}
+
+@media (max-width: 600px) {
+    .spots-grid {
+        display: flex;
+        flex-wrap: wrap;
+        overflow: auto;
+        margin: auto;
+    }
+
+    .single-spot {
+        border: 3px solid #264233;
+        width: 70%;
+    }
+}
+
+
+/*Details Page*/
+.details-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.callout-info {
     float: right;
+
 }

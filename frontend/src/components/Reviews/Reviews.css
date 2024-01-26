@@ -1,0 +1,18 @@
+.star-rating {
+    font-size: 30px;
+}
+
+.star {
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.star:hover {
+    color: gold;
+    /* Change color on hover */
+}
+
+.star.filled {
+    color: gold;
+    /* Filled star color */
+}

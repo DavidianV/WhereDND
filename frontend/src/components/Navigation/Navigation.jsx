@@ -11,12 +11,12 @@ function Navigation({ isLoaded }) {
             <li>
                 <NavLink to="/">
                     <i className="fa-solid fa-dice-d20"></i>
-                    <h2>WhereD&D?</h2>
+                    <h2 className='title'>WhereD&D?</h2>
                 </NavLink>
             </li>
             {isLoaded && (
                 <div className='navbar-right'>
-                    <NavLink exact to='/spots/new' style={{textDecoration: 'none'}}>
+                    <NavLink exact to='/spots/new' style={{textDecoration: 'none'}} hidden={!sessionUser}>
                         Create a New Spot
                     </NavLink>
                     <li>

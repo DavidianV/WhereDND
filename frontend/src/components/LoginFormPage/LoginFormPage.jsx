@@ -43,18 +43,20 @@ const LoginForm = () => {
                     placeholder="Username or Email"
                     value={credential}
                     onChange={updateCredential}
-                    required
+
                 />
                 <input
                     type="text"
                     placeholder="Password"
                     value={password}
                     onChange={updatePassword}
-                    required
+
                 />
                 {errors.credential && <p>{errors.credential}</p>}
                 <button disabled={!valid} type="submit">Login</button>
+
             </form>
+            
         </>
     )
 };

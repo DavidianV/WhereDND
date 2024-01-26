@@ -2,27 +2,35 @@ import { csrfFetch } from "./csrf";
 
 const LOAD_SPOTS = 'spots/loadSpots';
 const ADD_SPOT = 'spots/addSpot'
+const LOAD_SPOT_DETAILS = 'spots/loadSpotDetails'
 
 
 const loadSpots = (spots) => {
     return {
-      type: LOAD_SPOTS,
-      spots
+        type: LOAD_SPOTS,
+        spots
     };
-  };
+};
 
-  const addSpot = (spotData) => {
+const addSpot = (spotData) => {
     return {
         type: ADD_SPOT,
         spotData
     }
-  }
+}
+
+const loadSpotDetails = (spotData) => {
+    return {
+        type: LOAD_SPOT_DETAILS,
+        spotData
+    }
+}
 
 
 
 export const getSpots = () => async dispatch => {
     const res = await csrfFetch('/api/spots');
-    console.log("THIS THING IS COOKING")
+    //console.log("THIS THING IS COOKING")
 
     if (res.ok) {
         const spots = await res.json();
@@ -31,18 +39,30 @@ export const getSpots = () => async dispatch => {
     }
 }
 
+export const getSpotDetails = (spotId) => async dispatch => {
+    
+    const res = await csrfFetch(`/api/spots/${spotId}`)
+    const spotData = await res.json();
+    //console.log(spotData,'###')
+    if (res.ok) {
+        dispatch(loadSpotDetails(spotData))
+        return spotData
+    }
+}
+
 export const createSpot = (spotData) => async dispatch => {
     const res = await csrfFetch('/api/spots', {
         method: 'POST',
         body: JSON.stringify(spotData)
     });
-    let spot = await res.json()
-    if(res.ok) {
+    
+    if (res.ok) {
+        let spot = await res.json()
         dispatch(addSpot(spot))
     }
 }
 const initialState =
-{list: []}
+    { list: [] }
 
 const spotsReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -57,7 +77,11 @@ const spotsReducer = (state = initialState, action) => {
             }
         }
         case ADD_SPOT: {
-            return {...state, [action.spotData.id]: action.detailedSpot }
+            return { ...state, [action.spotData.id]: action.spotData }
+        }
+        case LOAD_SPOT_DETAILS: {
+            const {id} = action.spotData
+            return { ...state, [id]: { ...state[id], ...action.spotData }}
         }
         default:
             return state;
