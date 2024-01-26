@@ -1,0 +1,126 @@
+.profile-button {
+    padding: 3px 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-size: 30px;
+    border-radius: 37px;
+    border-color: lightslategray;
+    background-color: white;
+    font-family: inherit;
+    margin: 0;
+}
+
+.nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+}
+
+.navbar-right {
+    float: right;
+
+}
+
+.title {
+    float: left;
+    color: red;
+    font-size: large;
+}
+
+i {
+    font-size: 30px;
+    padding: 10px;
+    color: lightslategray;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border-width: 2px;
+    border-color: lightslategray;
+    border-bottom: 100%;
+}
+
+i {
+    display: inline;
+}
+
+.fa-dice-d20 {
+    color: red;
+    margin-right: auto;
+    float: left;
+}
+
+
+.dropdown {
+    display: block;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    overflow: hidden;
+    position: absolute;
+}
+
+.dropdown li {
+    float: inherit;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+h1 {
+    float: center;
+}
+
+.hidden {
+    display: none;
+}
+
+#modal-content input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#modal-content h1 {
+    text-align: center;
+}
+
+#modal-content {
+    width: 50%;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+#modal-content button {
+    width: 100%;
+    background-color: maroon;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#modal-content button:disabled {
+    background-color: lightslategray;
+}
+
+.error-message {
+    color: red;
+}
