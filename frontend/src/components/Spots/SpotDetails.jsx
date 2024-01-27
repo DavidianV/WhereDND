@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom"
-import { getSpotDetails, getSpots } from "../../store/spots";
+import { getSpotDetails } from "../../store/spots";
 import './LandingPage.css'
-import OpenModalButton from "../OpenModalButton/OpenModalButton";
-import NewReviewModal from "../Reviews/NewReviewModal";
+//import OpenModalButton from "../OpenModalButton/OpenModalButton";
+//import NewReviewModal from "../Reviews/NewReviewModal";
 
 const SpotDetails = () => {
     const { spotId } = useParams();
@@ -46,9 +46,9 @@ const SpotDetails = () => {
         alert('Feature Coming Soon...')
     }
 
-    const handleReview = () => {
+    // const handleReview = () => {
 
-    }
+    // }
     const noReviews = <h2>★ New</h2>
     const hasReviews = <h2>
         ★{spot.numReviews ? spot.avgStarRating : 'New'} &middot; {spot.numReviews} {spot.numReviews === 1 ? 'review' : 'reviews'}
@@ -82,14 +82,14 @@ const SpotDetails = () => {
                 <button onClick={handleReserve}>Reserve</button>
             </div>
 
-            <div className="reviews-wrapper">
+            {/* <div className="reviews-wrapper">
                 {spot.numReviews ? hasReviews : noReviews}
                 <OpenModalButton
                     buttonText="Post Your Review"
                     modalComponent={<NewReviewModal spotId={spot.id} />}
                 />
                 {spot.numReviews === 0 && <text>Be the first to post a review!</text>}
-            </div>
+            </div> */}
 
 
 

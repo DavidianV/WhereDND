@@ -41,14 +41,14 @@ export const newReview = (spotId, reviewData) => async dispatch => {
         body: JSON.stringify(reviewData)
     });
 
-    if(res.ok) {
+    if (res.ok) {
         const review = await res.json();
         dispatch(addReview(review))
         return review
     }
 }
 
-export const getUserReviews = (userId) => async dispatch => {
+export const getUserReviews = () => async dispatch => {
     const res = await csrfFetch(`/api/reviews/current`)
 
     if (res.ok) {
@@ -58,7 +58,11 @@ export const getUserReviews = (userId) => async dispatch => {
     }
 }
 
-const reviewsReducer = (state, action) => {
+const initialState =
+    { list: [] }
+
+
+const reviewsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_SPOT_REVIEWS: {
             console.log(action.reviews);
@@ -70,9 +74,9 @@ const reviewsReducer = (state, action) => {
                 ...state,
                 ...reviews
             }
-        } 
+        }
         case ADD_REVIEW: {
-            return { ...state, [action.review.id]: action.review}
+            return { ...state, [action.review.id]: action.review }
         }
         case LOAD_USER_REVIEWS: {
             console.log(action.userReviews)
@@ -85,5 +89,10 @@ const reviewsReducer = (state, action) => {
                 ...userReviews
             }
         }
-        }
+        default:
+            return state;
     }
+}
+
+
+export default reviewsReducer

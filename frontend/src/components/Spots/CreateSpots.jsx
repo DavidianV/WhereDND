@@ -62,7 +62,7 @@ const CreateSpot = () => {
             preview: true
         }
 
-        let preview = await dispatch(addImage(previewImg))
+        //let preview = await dispatch(addImage(previewImg))
 
     }
 
@@ -71,10 +71,10 @@ const CreateSpot = () => {
             <form className="spot-form" onSubmit={handleSubmit}>
                 <section>
                     <h1>Create a New Spot</h1>
-                    <h3>Where's your spot located?</h3>
-                    <text>Guests will only get your exact address once they've booked a reservation</text>
+                    <h3>Where&apos;s your spot located?</h3>
+                    <text>Guests will only get your exact address once they&apos;ve booked a reservation</text>
 
-                    <label for='country'>Country</label>
+                    <label htmlFor='country'>Country</label>
                     <input
                         id='country'
                         placeholder="Country"
@@ -82,7 +82,7 @@ const CreateSpot = () => {
                         value={country}
                         onChange={updateCountry}
                     />
-                    <label for="address">Address</label>
+                    <label htmlFor="address">Address</label>
                     <input
                         id='address'
                         placeholder="Address"
@@ -90,7 +90,7 @@ const CreateSpot = () => {
                         value={address}
                         onChange={updateAddress}
                     />
-                    <label for="city">City</label>
+                    <label htmlFor="city">City</label>
                     <input
                         id="city"
                         placeholder="City"
@@ -98,7 +98,7 @@ const CreateSpot = () => {
                         value={city}
                         onChange={updateCity}
                     />
-                    <label for="state">State</label>
+                    <label htmlFor="state">State</label>
                     <input
                         id="state"
                         placeholder="State"
@@ -106,7 +106,7 @@ const CreateSpot = () => {
                         value={state}
                         onChange={updateState}
                     />
-                    <label for="lat">Latitude</label>
+                    <label htmlFor="lat">Latitude</label>
                     <input
                         id="lat"
                         placeholder="Latitude"
@@ -114,7 +114,7 @@ const CreateSpot = () => {
                         value={lat}
                         onChange={updateLat}
                     />
-                    <label for="lng">Longitude</label>
+                    <label htmlFor="lng">Longitude</label>
                     <input
                         id="lng"
                         placeholder="Longitude"
@@ -138,7 +138,7 @@ const CreateSpot = () => {
 
                 <section>
                     <h3>Create a title for your spot</h3>
-                    <text>Catch guests' attention with a spot title that highlights what makes your place special</text>
+                    <text>Catch guests&apos; attention with a spot title that highlights what makes your place special</text>
                     <input
                         placeholder="Name of your spot"
                         type='text'

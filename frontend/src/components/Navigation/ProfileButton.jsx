@@ -45,7 +45,7 @@ function ProfileButton({ user }) {
     const closeMenu = () => setShowMenu(false);
 
     const manageButton = <button onClick={() => { navigate('/spots/current') }}>Manage Spots</button>
-    const newSpotButton = <button onClick={() => { navigate('/spots/new') }}>Create a New Spot</button>
+    //const newSpotButton = <button onClick={() => { navigate('/spots/new') }}>Create a New Spot</button>
 
 
     const logout = (e) => {
@@ -54,21 +54,23 @@ function ProfileButton({ user }) {
         closeMenu()
         navigate('/')
     };
-    let hasSpot
+    //let hasSpot
     useEffect(() => {
-        hasSpot = false
+        //hasSpot = false
     }, []);
     const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
-    console.log(spotsList)
-    {
-        if (user) {
-        spotsList.forEach((spot) => {
-            if(spot.ownerId === user.id)
-            hasSpot = true
-        })
+    // console.log(spotsList)
+    // {
+    //     if (user) {
+    //     spotsList.forEach((spot) => {
+    //         if(spot.ownerId === user.id) {
+
+    //         }
+    //         //hasSpot = true
+    //     })
         
-    }}
+    // }}
 
     return (
         <div>

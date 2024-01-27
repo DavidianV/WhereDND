@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useState} from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
@@ -26,7 +26,6 @@ function LoginFormModal() {
             console.log('ERRRORSRORS', errors)
     };
 
-    let valid
     const handleDemo = () => {
         return dispatch(sessionActions.login({
             credential: 'demo@user.io',

@@ -8,15 +8,16 @@ const LandingPage = () => {
     const allSpots = useSelector(state => state.spots);
     const spotsList = Object.values(allSpots);
 
+    const dispatcher = async () =>  {
+        dispatch(getSpots())
+    }
+
     useEffect(() => {
         //console.log('dispatching')
-        dispatch(getSpots())
+        dispatcher()
 
-    }, [dispatch])
+    }, [dispatcher])
 
-    return (
-        <div className="spot-tiles">
-            {spotsList.map((spot) => {
                 //console.log('###', spot)
                 // return (
                 //     <div className="tile">
@@ -67,8 +68,6 @@ const LandingPage = () => {
                         </section>
                     </div>
                 )
-            })}
-        </div>)
-}
+                            }
 
 export default LandingPage;
