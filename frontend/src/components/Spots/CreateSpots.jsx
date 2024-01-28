@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux"
 import { createSpot } from "../../store/spots";
+import { useNavigate } from "react-router-dom";
+import { postImage } from "../../store/images";
 
 const CreateSpot = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [country, setCountry] = useState("");
     const [address, setAddress] = useState('');
@@ -38,29 +41,55 @@ const CreateSpot = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if (!lat) setLat(60.000000)
-        if (!lng) setLng(-55.000000)
-
         const payload = {
             address,
             city,
             state,
             country,
-            lat,
-            lng,
+            lat: lat ? lat : 60.000000,
+            lng: lng ? lng : -55.000000,
             name,
             description,
             price
         }
 
-        let createdSpot = await dispatch(createSpot(payload))
-        console.log(createdSpot)
-        //let spotId = createdSpot.id
 
-        const previewImg = {
+
+        let createdSpot
+
+        createdSpot = await dispatch(createSpot(payload))
+
+        const imageDispatcher = async (image) => {
+            const payload = {
+                spotId: createdSpot.id,
+                image
+            }
+            dispatch(postImage(payload))
+        }
+
+        const mainImg = {
             url: previewImg,
             preview: true
         }
+        imageDispatcher(mainImg)
+
+        const subImages = [imgOne, imgTwo, imgThree, imgFour]
+        subImages.forEach(subImg => {
+            const image = {
+                url: subImg,
+                preview: false
+            }
+            imageDispatcher(image)
+        })
+
+
+
+
+
+
+
+        navigate(`/spots/${createdSpot.id}`)
+        //let spotId = createdSpot.id
 
         //let preview = await dispatch(addImage(previewImg))
 
@@ -72,7 +101,7 @@ const CreateSpot = () => {
                 <section>
                     <h1>Create a New Spot</h1>
                     <h3>Where&apos;s your spot located?</h3>
-                    <text>Guests will only get your exact address once they&apos;ve booked a reservation</text>
+                    <p>Guests will only get your exact address once they&apos;ve booked a reservation</p>
 
                     <label htmlFor='country'>Country</label>
                     <input
@@ -127,7 +156,7 @@ const CreateSpot = () => {
 
                 <section>
                     <h3>Describe your place to guests</h3>
-                    <text>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood</text>
+                    <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood</p>
                     <input
                         placeholder="Please write at least 30 characters"
                         type='text'
@@ -138,7 +167,7 @@ const CreateSpot = () => {
 
                 <section>
                     <h3>Create a title for your spot</h3>
-                    <text>Catch guests&apos; attention with a spot title that highlights what makes your place special</text>
+                    <p>Catch guests&apos; attention with a spot title that highlights what makes your place special</p>
                     <input
                         placeholder="Name of your spot"
                         type='text'
@@ -149,7 +178,7 @@ const CreateSpot = () => {
 
                 <section>
                     <h3>Set a base price for your spot</h3>
-                    <text>Competitive pricing can help your listing stand out and rank higher in search results</text>
+                    <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
                     <input
                         placeholder="Price per night (USD)"
                         type='text'
@@ -160,7 +189,7 @@ const CreateSpot = () => {
 
                 <section>
                     <h3>Liven up your spot with photos</h3>
-                    <text>Submit a link to at least one photo to publish your spot</text>
+                    <p>Submit a link to at least one photo to publish your spot</p>
                     <input
                         placeholder="Preview Image URL"
                         type='text'
@@ -172,25 +201,25 @@ const CreateSpot = () => {
                         type="text"
                         value={imgOne}
                         onChange={updateImgOne}
-                        />
-                        <input
+                    />
+                    <input
                         placeholder="Image URL"
                         type="text"
                         value={imgTwo}
                         onChange={updateImgTwo}
-                        />
-                        <input
+                    />
+                    <input
                         placeholder="Image URL"
                         type="text"
                         value={imgThree}
                         onChange={updateImgThree}
-                        />
-                        <input
+                    />
+                    <input
                         placeholder="Image URL"
                         type="text"
                         value={imgFour}
                         onChange={updateImgFour}
-                        />
+                    />
                 </section>
 
                 <button type="submit">Create Spot</button>

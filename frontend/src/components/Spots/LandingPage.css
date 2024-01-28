@@ -91,6 +91,7 @@
 .details-wrapper {
     max-width: 1000px;
     margin: 0 auto;
+    padding-top: 80px;
 }
 
 .callout-info {

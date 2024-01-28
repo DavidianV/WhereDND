@@ -15,7 +15,15 @@ const SpotDetails = () => {
     //console.log(spot, '###')
 
     useEffect(() => {
-        dispatch(getSpotDetails(spotId));
+        const dispatcher = async (spotId) => {
+            await dispatch(getSpotDetails(spotId));
+        }
+
+
+
+        dispatcher(spotId)
+
+
     }, [dispatch, spotId]);
     //console.log('###spot###', spot)
 
@@ -54,7 +62,7 @@ const SpotDetails = () => {
         ★{spot.numReviews ? spot.avgStarRating : 'New'} &middot; {spot.numReviews} {spot.numReviews === 1 ? 'review' : 'reviews'}
     </h2>
 
-    //console.log('---', spot)
+    console.log('---', spot)
     return (
         <div className="details-wrapper">
             <h1>{spot.name}</h1>

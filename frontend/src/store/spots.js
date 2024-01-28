@@ -42,23 +42,26 @@ export const getSpots = () => async dispatch => {
 export const getSpotDetails = (spotId) => async dispatch => {
     
     const res = await csrfFetch(`/api/spots/${spotId}`)
-    const spotData = await res.json();
+    
     //console.log(spotData,'###')
     if (res.ok) {
+        const spotData = await res.json();
+
         dispatch(loadSpotDetails(spotData))
         return spotData
     }
 }
 
-export const createSpot = (spotData) => async dispatch => {
+export const createSpot = (spotData, ) => async dispatch => {
     const res = await csrfFetch('/api/spots', {
         method: 'POST',
         body: JSON.stringify(spotData)
     });
     
     if (res.ok) {
-        let spot = await res.json()
+        const spot = await res.json()
         dispatch(addSpot(spot))
+        return spot
     }
 }
 const initialState =

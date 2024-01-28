@@ -13,16 +13,19 @@ const UserSpots = () => {
     const userId = useSelector
     const userSpots = spotsList.filter(spot => spot.ownerId === userId)
 
-    const dispatcher = async () => {
-        await dispatch(getSpots())
-    }
-
+    
 
     useEffect(() => {
         //console.log('dispatching')
+
+
+        const dispatcher = async () => {
+        await dispatch(getSpots())
+    }
+
         dispatcher()
 
-    }, [dispatcher])
+    }, [dispatch])
 
 
     const newSpotButton = <button onClick={() => { navigate('/spots/new') }}>Create a New Spot</button>

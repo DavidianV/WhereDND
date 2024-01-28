@@ -8,15 +8,17 @@ const LandingPage = () => {
     const allSpots = useSelector(state => state.spots);
     const spotsList = Object.values(allSpots);
 
-    const dispatcher = async () =>  {
-        dispatch(getSpots())
-    }
+   
 
     useEffect(() => {
         //console.log('dispatching')
+
+         const dispatcher = async () =>  {
+        dispatch(getSpots())
+    }
         dispatcher()
 
-    }, [dispatcher])
+    }, [dispatch])
 
                 //console.log('###', spot)
                 // return (
