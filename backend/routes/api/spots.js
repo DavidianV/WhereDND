@@ -296,10 +296,10 @@ router.get('/:spotId', async (req, res, next) => {
     const avgRating = await calculateAvgRating(spotId);
     const spotImages = await SpotImage.findAll({
         where: {
-            id: spotId
+            spotId: spotId
         },
         attributes: {
-            exclude: ['createdAt', 'updatedAt']
+            exclude: ['spotId', 'createdAt', 'updatedAt']
         }
     })
 

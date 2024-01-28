@@ -94,7 +94,25 @@
     padding-top: 80px;
 }
 
+.main-image {
+    max-width: 480px;
+    content: inherit;
+}
+
+.images-wrapper {
+    max-width: 500px;
+    content: inherit;
+    float: right;
+}
+
+
 .callout-info {
     float: right;
 
+}
+
+/*CreateSpots*/
+
+.spot-form {
+    padding-top: 80px;
 }

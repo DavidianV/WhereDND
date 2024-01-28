@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux"
 import { createSpot } from "../../store/spots";
 import { useNavigate } from "react-router-dom";
 import { postImage } from "../../store/images";
+import './LandingPage.css'
 
 const CreateSpot = () => {
     const dispatch = useDispatch();
@@ -98,8 +99,9 @@ const CreateSpot = () => {
     return (
         <section>
             <form className="spot-form" onSubmit={handleSubmit}>
+                <h1>Create a New Spot</h1>
                 <section>
-                    <h1>Create a New Spot</h1>
+                    
                     <h3>Where&apos;s your spot located?</h3>
                     <p>Guests will only get your exact address once they&apos;ve booked a reservation</p>
 
