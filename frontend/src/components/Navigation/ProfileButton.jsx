@@ -6,7 +6,6 @@ import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
 import './Navigation.css'
 import { NavLink, useNavigate } from 'react-router-dom';
-import { getSpots } from '../../store/spots';
 
 function ProfileButton({ user }) {
     const dispatch = useDispatch();
@@ -25,7 +24,6 @@ function ProfileButton({ user }) {
     };
 
     useEffect(() => {
-        dispatch(getSpots())
 
         if (!showMenu) return;
 

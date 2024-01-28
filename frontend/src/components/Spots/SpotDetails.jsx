@@ -35,7 +35,10 @@ const SpotDetails = () => {
     //     mainImage = spot.SpotImages.find(image => image.preview === true);
     //     images = spot.SpotImages.filter(image => image.preview === false);
     // }
-    if (!spot || !spot.Owner || !spot.SpotImages) {
+    // console.log('SPOT', spot)
+    // console.log('OWNER', spot.Owner)
+    // console.log('IMAGES', spot.SpotImages)
+    if (!spot || !spot.Owner) {
         return (
             <>
                 <h1>
@@ -43,12 +46,16 @@ const SpotDetails = () => {
                 </h1>
             </>
         )
-    } else if (spot.SpotImages) {
+    }
+
+    if (spot.SpotImages) {
         mainImage = spot.SpotImages.find(image => image.preview === true);
         images = spot.SpotImages.filter(image => image.preview === false);
+    }
+        
         owner = spot.Owner
         console.log('___', spot)
-    }
+    
 
     const handleReserve = () => {
         alert('Feature Coming Soon...')

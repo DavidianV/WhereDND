@@ -96,12 +96,12 @@
 
 .main-image {
     max-width: 480px;
-    content: inherit;
+
 }
 
 .images-wrapper {
     max-width: 500px;
-    content: inherit;
+
     float: right;
 }
 

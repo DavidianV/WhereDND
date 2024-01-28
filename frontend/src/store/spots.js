@@ -40,9 +40,9 @@ export const getSpots = () => async dispatch => {
 }
 
 export const getSpotDetails = (spotId) => async dispatch => {
-    
+
     const res = await csrfFetch(`/api/spots/${spotId}`)
-    
+
     //console.log(spotData,'###')
     if (res.ok) {
         const spotData = await res.json();
@@ -52,12 +52,12 @@ export const getSpotDetails = (spotId) => async dispatch => {
     }
 }
 
-export const createSpot = (spotData, ) => async dispatch => {
+export const createSpot = (spotData,) => async dispatch => {
     const res = await csrfFetch('/api/spots', {
         method: 'POST',
         body: JSON.stringify(spotData)
     });
-    
+
     if (res.ok) {
         const spot = await res.json()
         dispatch(addSpot(spot))
@@ -65,7 +65,10 @@ export const createSpot = (spotData, ) => async dispatch => {
     }
 }
 const initialState =
-    { list: [] }
+{
+    list: [],
+    spots: {},
+}
 
 const spotsReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -83,8 +86,8 @@ const spotsReducer = (state = initialState, action) => {
             return { ...state, [action.spotData.id]: action.spotData }
         }
         case LOAD_SPOT_DETAILS: {
-            const {id} = action.spotData
-            return { ...state, [id]: { ...state[id], ...action.spotData }}
+            const { id } = action.spotData
+            return { ...state, [id]: { ...state[id], ...action.spotData } }
         }
         default:
             return state;
