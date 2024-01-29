@@ -5,7 +5,7 @@ import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
 import './Navigation.css'
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function ProfileButton({ user }) {
     const dispatch = useDispatch();
@@ -105,7 +105,7 @@ function ProfileButton({ user }) {
                             />
                         </li>
                         <li className='manage-spots'>
-                            <NavLink exact to='/spots/current' />
+                            <button onClick={navigate('/spots/current')}>Manage Spots</button>
                         </li>
                     </div>
                 )}

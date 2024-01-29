@@ -81,6 +81,10 @@ h1 {
     float: center;
 }
 
+.confirm-delete-text {
+    float: center
+}
+
 .hidden {
     display: none;
 }
